@@ -7,8 +7,7 @@ const OLLAMA_API_KEY = process.env.OLLAMA_API_KEY;
 const TAVILY_API_KEY = process.env.TAVILY_API_KEY;
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || 'YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com';
 
-const FREE_LIMIT = 10;
-const PRO_LIMIT = 30;
+const FREE_LIMIT = 10;const PRO_LIMIT = 30;
 
 // In-memory usage store: { email: { count, date, isPro } }
 const usageStore = {};
@@ -95,6 +94,48 @@ app.post('/api/usage', async (req, res) => {
   }
 });
 
+// UPI payment submission — stores pending request, you manually verify and approve
+const pendingUpiPayments = [];
+
+app.post('/api/submit-upi', async (req, res) => {
+  try {
+    const { token, email, txnId, name } = req.body;
+    const user = await verifyGoogleToken(token);
+    if (user.email !== email) return res.status(401).json({ success: false, error: 'Email mismatch' });
+
+    // Store pending payment
+    pendingUpiPayments.push({
+      email,
+      name,
+      txnId,
+      submittedAt: new Date().toISOString()
+    });
+    console.log(`💳 UPI payment submitted by ${email} | TXN: ${txnId}`);
+
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Admin endpoint — view pending UPI payments (protect with env secret)
+app.get('/api/admin/pending', (req, res) => {
+  const secret = req.query.secret;
+  if (secret !== process.env.ADMIN_SECRET) return res.status(401).json({ error: 'Unauthorized' });
+  res.json({ pending: pendingUpiPayments, proUsers: PRO_USERS });
+});
+
+// Admin endpoint — manually approve a UPI payment
+app.post('/api/admin/approve', async (req, res) => {
+  const { email, secret } = req.body;
+  if (secret !== process.env.ADMIN_SECRET) return res.status(401).json({ error: 'Unauthorized' });
+  if (!PRO_USERS.includes(email)) PRO_USERS.push(email);
+  const today = new Date().toDateString();
+  usageStore[email] = { count: 0, date: today, isPro: true };
+  console.log(`✓ Pro manually approved for ${email}`);
+  res.json({ success: true, message: `Pro granted to ${email}` });
+});
+
 app.post('/api/chat', async (req, res) => {
   try {
     const { messages, enableSearch = false, googleToken } = req.body;
@@ -175,5 +216,7 @@ app.listen(PORT, () => {
   console.log(`✓ Arese.AI running on port ${PORT}`);
   console.log(`✓ Ollama API key: ${OLLAMA_API_KEY ? 'set ✓' : 'MISSING ✗'}`);
   console.log(`✓ Tavily web search: ${TAVILY_API_KEY ? 'enabled ✓' : 'disabled'}`);
-  console.log(`✓ Google Client ID: ${GOOGLE_CLIENT_ID.includes('YOUR_') ? 'placeholder — set GOOGLE_CLIENT_ID env var ✗' : 'set ✓'}`);
+  console.log(`✓ Google Client ID: ${GOOGLE_CLIENT_ID.includes('YOUR_') ? 'placeholder ✗' : 'set ✓'}`);
+  console.log(`✓ Admin secret: ${process.env.ADMIN_SECRET ? 'set ✓' : 'not set ✗ (admin endpoints unprotected)'}`);
+  console.log(`✓ Pro users: ${PRO_USERS.length ? PRO_USERS.join(', ') : 'none'}`);
 });
