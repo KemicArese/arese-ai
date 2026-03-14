@@ -537,7 +537,7 @@ display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.5rem
         <div class="lp-feat">
           <span>10 messages / day</span>
           <span>All 9 AI tools</span>
-          <span>Voice Mode</span>
+          <span>Web Search</span>
         </div>
       </div>
       <div class="login-plan pro-plan">
@@ -547,7 +547,8 @@ display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.5rem
         <div class="lp-feat">
           <span>30 messages / day</span>
           <span>All 9 AI tools</span>
-          <span>Web Search</span>
+          <span>🎙 Voice Mode</span>
+          <span>🌐 Web Search</span>
           <span>Priority support</span>
         </div>
       </div>
@@ -568,8 +569,8 @@ display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.5rem
         <div class="pc-feat">
           <span>10 messages / day</span>
           <span>All 9 AI tools</span>
-          <span>Voice Mode</span>
           <span>Light + Dark mode</span>
+          <span>Web Search</span>
         </div>
       </div>
       <div class="pc-card gold">
@@ -578,8 +579,8 @@ display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.5rem
         <div class="pc-feat">
           <span>30 messages / day</span>
           <span>All 9 AI tools</span>
-          <span>Web Search</span>
-          <span>Voice Mode</span>
+          <span>🎙 Voice Mode</span>
+          <span>🌐 Web Search</span>
           <span>Priority support</span>
         </div>
       </div>
@@ -587,7 +588,7 @@ display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.5rem
     <button class="run" onclick="handleProPurchase()" style="background:linear-gradient(135deg,#f59e0b,#e8460a);box-shadow:0 4px 20px rgba(245,158,11,.3);">
       ⭐ Get Pro for ₹99/month
     </button>
-    <p class="pro-note">Payment integration coming soon. Contact us at <b>arese@kemicArese.github.io</b> to upgrade manually.</p>
+    <p class="pro-note">Payment integration coming soon. Contact us at <b><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="167764736573567d737b7f75576473657338717f627e6374387f79">[email&#160;protected]</a></b> to upgrade manually.</p>
   </div>
 </div>
 
@@ -666,7 +667,7 @@ display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.5rem
       <div class="tc" onclick="showTool('language')"><div class="tc-top"><div class="tc-ico">🌐</div><div class="tc-arr">↗</div></div><div class="tc-name">Language Tutor</div><div class="tc-desc">Practice any language with real-time corrections and expression suggestions.</div></div>
       <div class="tc" onclick="showTool('coding')"><div class="tc-top"><div class="tc-ico">💻</div><div class="tc-arr">↗</div></div><div class="tc-name">Coding Assistant</div><div class="tc-desc">Debug code, learn concepts, get guided step-by-step through projects.</div></div>
       <div class="tc" onclick="showTool('chat')" style="border-color:rgba(232,70,10,.25);background:linear-gradient(135deg,var(--brand-l),var(--surface));"><div class="tc-top"><div class="tc-ico" style="font-size:1.4rem;">✦</div><div class="tc-arr" style="background:var(--brand);border-color:var(--brand);color:#fff;">↗</div></div><div class="tc-name" style="color:var(--brand);">General AI Chat</div><div class="tc-desc">Ask anything — homework help, explanations, essay ideas, general questions. Your all-purpose AI.</div></div>
-      <div class="tc" onclick="showTool('voice')" style="border-color:rgba(124,106,247,.25);background:linear-gradient(135deg,rgba(124,106,247,.06),var(--surface));"><div class="tc-top"><div class="tc-ico" style="background:rgba(124,106,247,.1);border-color:rgba(124,106,247,.2);font-size:1.3rem;">🎙</div><div class="tc-arr" style="background:#7c6af7;border-color:#7c6af7;color:#fff;">↗</div></div><div class="tc-name" style="color:#7c6af7;">Voice Mode</div><div class="tc-desc">Speak to Arese AI in English or Hindi and hear responses spoken back to you in real time.</div></div>
+      <div class="tc" onclick="showTool('voice')" style="border-color:rgba(124,106,247,.25);background:linear-gradient(135deg,rgba(124,106,247,.06),var(--surface));"><div class="tc-top"><div class="tc-ico" style="background:rgba(124,106,247,.1);border-color:rgba(124,106,247,.2);font-size:1.3rem;">🎙</div><div class="tc-arr" style="background:#7c6af7;border-color:#7c6af7;color:#fff;">↗</div></div><div class="tc-name" style="color:#7c6af7;">Voice Mode <span style="font-size:.65rem;padding:2px 7px;border-radius:4px;background:rgba(245,158,11,.15);border:1px solid #f59e0b;color:#d97706;font-weight:700;vertical-align:middle;">⭐ PRO</span></div><div class="tc-desc">Speak to Arese AI in English or Hindi and hear responses spoken back to you in real time.</div></div>
     </div>
   </section>
   <div class="divider"></div>
@@ -907,8 +908,11 @@ display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.5rem
   <button class="back" onclick="backToHome()">← Back to Home</button>
   <div class="ph" style="background:linear-gradient(135deg,rgba(124,106,247,.08),var(--surface));border-color:rgba(124,106,247,.2);">
     <span class="ph-icon">🎙</span>
-    <div class="ph-title" style="background:linear-gradient(135deg,#7c6af7,#f27dff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Voice Mode</div>
-    <div class="ph-desc">Speak to Arese AI in English or Hindi. Tap the mic, ask your question, and hear the answer spoken back to you.</div>
+    <div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;">
+      <div class="ph-title" style="background:linear-gradient(135deg,#7c6af7,#f27dff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Voice Mode</div>
+      <span style="padding:3px 10px;border-radius:100px;font-size:.7rem;font-weight:700;background:linear-gradient(135deg,rgba(245,158,11,.15),rgba(232,70,10,.1));border:1px solid #f59e0b;color:#d97706;letter-spacing:.05em;">⭐ PRO FEATURE</span>
+    </div>
+    <div class="ph-desc">Speak to Arese AI in English or Hindi. Tap the mic, ask your question, and hear the answer spoken back to you. <span style="color:var(--brand);font-weight:600;cursor:pointer;" onclick="openProModal()">Upgrade to Pro →</span></div>
   </div>
   <div class="api-badge"><div class="adot"></div><span>Ollama Cloud · Web Speech API</span><div class="mtag" style="background:rgba(124,106,247,.1);color:#7c6af7;border-color:rgba(124,106,247,.25);">VOICE</div></div>
 
@@ -952,7 +956,7 @@ display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.5rem
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ============================================================
 // ALL FUNCTIONS ARE GLOBAL — inline onclick handlers can find them
 // ============================================================
@@ -1033,7 +1037,54 @@ function getRemainingMessages() {
 }
 
 function isLimitReached() {
+  if (!currentUser) return false; // not logged in handled separately
   return getRemainingMessages() <= 0;
+}
+
+function notLoggedIn() {
+  if (!currentUser) return true;
+  return false;
+}
+
+// Single guard — call at top of every tool. Returns true = block, false = proceed.
+function guardCheck(requirePro = false) {
+  if (!currentUser) {
+    showToast('Please login to use this feature 🔐', 'warn');
+    document.getElementById('login-screen').style.display = 'flex';
+    return true;
+  }
+  if (requirePro && !currentUser.isPro) {
+    openProModal();
+    return true;
+  }
+  if (isLimitReached()) {
+    openProModal();
+    return true;
+  }
+  return false;
+}
+
+// Toast notification
+function showToast(msg, type = 'warn') {
+  let toast = document.getElementById('arese-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'arese-toast';
+    toast.style.cssText = `
+      position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);
+      padding:12px 24px;border-radius:10px;font-size:.88rem;font-weight:600;
+      font-family:'Plus Jakarta Sans',sans-serif;z-index:99999;
+      box-shadow:0 4px 24px rgba(0,0,0,.18);transition:opacity .3s;
+      white-space:nowrap;pointer-events:none;
+    `;
+    document.body.appendChild(toast);
+  }
+  toast.textContent = msg;
+  toast.style.background = type === 'warn' ? '#1a1917' : '#22c55e';
+  toast.style.color = type === 'warn' ? '#f0ede8' : '#fff';
+  toast.style.opacity = '1';
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => { toast.style.opacity = '0'; }, 3000);
 }
 
 function updateUserUI() {
@@ -1195,7 +1246,7 @@ function appendChat(chat,role,text){
 
 // ----- PLANNER -----
 async function runPlanner(){
-  if(isLimitReached()){openProModal();return;}
+  if(guardCheck())return;
   const s=v('p-subjects'),e=v('p-exams'),h=v('p-hours'),p=v('p-pace'),w=v('p-weak');
   if(!s.trim())return;
   loading('planner-btn',true,'✨ Generate My Study Timetable');
@@ -1212,6 +1263,7 @@ async function runPlanner(){
 
 // ----- ESSAY -----
 async function runEssay(){
+  if(guardCheck())return;
   const text=v('e-text'),mode=v('e-mode');
   if(!text.trim())return;
   loading('essay-btn',true,'✨ Analyze & Improve My Writing');
@@ -1229,6 +1281,7 @@ async function runEssay(){
 
 // ----- FAKE NEWS -----
 async function runFakeNews(){
+  if(guardCheck())return;
   const text=v('fn-text');
   if(!text.trim())return;
   loading('fn-btn',true,'🔍 Analyze Credibility');
@@ -1262,6 +1315,7 @@ function selMood(el,mood){
   document.getElementById('w-in').focus();
 }
 async function sendW(){
+  if(guardCheck())return;
   const inp=document.getElementById('w-in');
   const msg=inp.value.trim();
   if(!msg)return;inp.value='';
@@ -1278,6 +1332,7 @@ async function sendW(){
 
 // ----- NOTES -----
 async function runNotes(){
+  if(guardCheck())return;
   const text=v('n-text'),mode=v('n-mode');
   if(!text.trim())return;
   loading('notes-btn',true,'📝 Summarize & Create Flashcards');
@@ -1311,6 +1366,7 @@ async function runNotes(){
 // ----- LANGUAGE -----
 let lH=[];
 async function sendL(){
+  if(guardCheck())return;
   const inp=document.getElementById('l-in');
   const msg=inp.value.trim(),lang=v('l-lang'),lvl=v('l-lvl');
   if(!msg)return;inp.value='';
@@ -1326,6 +1382,7 @@ async function sendL(){
 
 // ----- CODING -----
 async function runCode(){
+  if(guardCheck())return;
   const code=v('c-code'),lang=v('c-lang'),prob=v('c-prob'),mode=v('c-mode');
   if(!code.trim()&&!prob.trim())return;
   loading('code-btn',true,'💻 Analyze & Help Me Fix It');
@@ -1377,6 +1434,7 @@ function clearChat(){
   document.getElementById('chat-suggestions').style.display='block';
 }
 async function sendAI(){
+  if(guardCheck())return;
   const inp=document.getElementById('ai-in');
   const msg=inp.value.trim();
   if(!msg)return;
@@ -1495,6 +1553,7 @@ function setVoiceLang(lang){
   setVoiceStatus(lang==='hi'?'Hindi mode — हिंदी में बोलें 🇮🇳':'English mode — tap mic to speak 🇬🇧','');
 }
 function toggleMic(){
+  if(guardCheck(true))return; // true = requirePro
   if(!recognition&&!initVoice())return;
   if(isListening){recognition.stop();}
   else{stopSpeaking();recognition.lang=voiceLang==='hi'?'hi-IN':'en-US';recognition.start();}
@@ -1593,12 +1652,4 @@ document.addEventListener('DOMContentLoaded', function() {
   const aiIn=document.getElementById('ai-in');
   if(aiIn)aiIn.addEventListener('input',updateCharCount);
 
-  // Preload voices for TTS (guard for browsers without speech synthesis)
-  if(window.speechSynthesis){
-    window.speechSynthesis.onvoiceschanged=()=>window.speechSynthesis.getVoices();
-    window.speechSynthesis.getVoices();
-  }
-});
-</script>
-</body>
-</html>
+  // Preload voices for
