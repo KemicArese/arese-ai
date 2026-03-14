@@ -1,17 +1,23 @@
-import express from 'express';
-import ollama from 'ollama';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+const express = require('express');
+const { Ollama } = require('ollama');
+const path = require('path');
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Use API key from environment variable
+const ollama = new Ollama({
+  host: 'https://ollama.com',
+  headers: {
+    'Authorization': `Bearer ${process.env.OLLAMA_API_KEY}`
+  }
+});
 
 app.use(express.json());
 
 // Serve the HTML frontend
 app.get('/', (req, res) => {
-  res.sendFile(join(__dirname, 'arese-ai.html'));
+  res.sendFile(path.join(__dirname, 'arese-ai.html'));
 });
 
 // API route — called by the frontend
