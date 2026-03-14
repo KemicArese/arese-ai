@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arese.AI — Admin Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fraunces:wght@700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+<style>
+:root {
+  --brand:#e8460a; --brand-l:#fff1ec; --brand2:#f59e0b;
+  --bg:#f7f6f3; --surface:#fff; --surface2:#f2f1ee; --surface3:#e9e8e4;
+  --border:#e2e0da; --border2:#cbc9c2;
+  --text:#1a1917; --text2:#6b6860; --text3:#b0ada6;
+  --shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.05);
+  --shadow-lg:0 4px 6px rgba(0,0,0,.04),0 12px 40px rgba(0,0,0,.09);
+  --green:#22c55e; --red:#ef4444; --amber:#f59e0b; --purple:#7c6af7;
+}
+[data-theme="dark"] {
+  --bg:#111010; --surface:#1e1d1c; --surface2:#252320; --surface3:#2e2c29;
+  --border:#323028; --border2:#3e3c38;
+  --text:#f0ede8; --text2:#8c8880; --text3:#504e4a;
+  --brand-l:rgba(232,70,10,.1);
+  --shadow:0 1px 3px rgba(0,0,0,.3),0 4px 16px rgba(0,0,0,.25);
+  --shadow-lg:0 4px 6px rgba(0,0,0,.3),0 12px 40px rgba(0,0,0,.4);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+#login-screen{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;}
+.login-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:2.5rem 2rem;max-width:380px;width:100%;text-align:center;box-shadow:var(--shadow-lg);position:relative;overflow:hidden;}
+.login-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--brand),var(--brand2));}
+.login-logo{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:800;color:var(--brand);margin-bottom:.25rem;}
+.login-sub{font-size:.85rem;color:var(--text2);margin-bottom:.5rem;}
+.login-warn{font-size:.78rem;color:var(--text3);background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;margin-bottom:1.5rem;}
+.google-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:12px 18px;border-radius:9px;border:1.5px solid var(--border2);background:var(--surface);color:var(--text);font-size:.9rem;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .18s;}
+.google-btn:hover{border-color:var(--brand);transform:translateY(-1px);box-shadow:0 4px 16px rgba(232,70,10,.15);}
+.google-icon{width:18px;height:18px;}
+#app{display:none;}
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:220px;background:var(--surface);border-right:1px solid var(--border);padding:1.5rem 1rem;display:flex;flex-direction:column;gap:4px;z-index:100;}
+.sidebar-logo{font-family:'Fraunces',serif;font-size:1.2rem;font-weight:800;color:var(--brand);margin-bottom:1.25rem;padding:0 .5rem;}
+.sidebar-logo span{font-size:.7rem;color:var(--text3);font-family:'Plus Jakarta Sans',sans-serif;font-weight:600;display:block;margin-top:1px;}
+.nav-item{display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:9px;cursor:pointer;font-size:.84rem;font-weight:600;color:var(--text2);border:none;background:transparent;font-family:'Plus Jakarta Sans',sans-serif;transition:all .17s;width:100%;text-align:left;}
+.nav-item:hover{background:var(--surface2);color:var(--text);}
+.nav-item.active{background:var(--brand-l);color:var(--brand);}
+.sidebar-footer{margin-top:auto;padding:.75rem .5rem;border-top:1px solid var(--border);}
+.admin-pill{font-size:.72rem;color:var(--text2);font-weight:600;}
+.admin-pill img{width:22px;height:22px;border-radius:50%;margin-right:6px;vertical-align:middle;}
+.main{margin-left:220px;padding:2rem;min-height:100vh;}
+.page{display:none;}
+.page.active{display:block;}
+.page-title{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:700;color:var(--text);margin-bottom:1.5rem;letter-spacing:-.02em;}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1rem;margin-bottom:2rem;}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.25rem;box-shadow:var(--shadow);}
+.stat-label{font-size:.72rem;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem;}
+.stat-val{font-family:'Fraunces',serif;font-size:2rem;font-weight:700;color:var(--text);}
+.stat-card.brand .stat-val{color:var(--brand);}
+.stat-card.green .stat-val{color:var(--green);}
+.stat-card.amber .stat-val{color:var(--amber);}
+.stat-card.purple .stat-val{color:var(--purple);}
+.table-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:1.5rem;}
+.table-head{padding:1rem 1.25rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.table-title{font-weight:700;font-size:.95rem;color:var(--text);}
+.table-count{font-size:.75rem;color:var(--text3);font-weight:600;background:var(--surface2);padding:3px 10px;border-radius:100px;border:1px solid var(--border);}
+table{width:100%;border-collapse:collapse;}
+th{padding:10px 1.25rem;text-align:left;font-size:.72rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--border);background:var(--surface2);}
+td{padding:12px 1.25rem;font-size:.84rem;border-bottom:1px solid var(--border);color:var(--text2);}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:var(--surface2);}
+.email-cell{font-weight:600;color:var(--text);}
+.mono{font-family:'JetBrains Mono',monospace;font-size:.78rem;}
+.badge{display:inline-block;padding:2px 9px;border-radius:100px;font-size:.68rem;font-weight:700;letter-spacing:.04em;}
+.badge-pro{background:rgba(245,158,11,.1);color:#d97706;border:1px solid rgba(245,158,11,.25);}
+.badge-free{background:var(--surface2);color:var(--text3);border:1px solid var(--border);}
+.badge-pending{background:rgba(245,158,11,.1);color:#d97706;border:1px solid rgba(245,158,11,.25);}
+.badge-approved{background:rgba(34,197,94,.1);color:#16a34a;border:1px solid rgba(34,197,94,.2);}
+.badge-rejected{background:rgba(239,68,68,.1);color:#ef4444;border:1px solid rgba(239,68,68,.2);}
+.btn{padding:6px 13px;border-radius:7px;font-size:.77rem;font-weight:700;cursor:pointer;border:1.5px solid;font-family:'Plus Jakarta Sans',sans-serif;transition:all .17s;}
+.btn-approve{background:rgba(34,197,94,.08);color:#16a34a;border-color:rgba(34,197,94,.3);}
+.btn-approve:hover{background:#22c55e;color:#fff;border-color:#22c55e;}
+.btn-revoke{background:rgba(239,68,68,.08);color:#ef4444;border-color:rgba(239,68,68,.3);}
+.btn-revoke:hover{background:#ef4444;color:#fff;border-color:#ef4444;}
+.btn-reject{background:rgba(239,68,68,.08);color:#ef4444;border-color:rgba(239,68,68,.3);}
+.btn-reject:hover{background:#ef4444;color:#fff;border-color:#ef4444;}
+.btn-reset{background:var(--surface2);color:var(--text2);border-color:var(--border);}
+.btn-reset:hover{border-color:var(--brand);color:var(--brand);}
+.btn-row{display:flex;gap:6px;flex-wrap:wrap;}
+.search-row{padding:.875rem 1.25rem;border-bottom:1px solid var(--border);background:var(--surface2);}
+.search-input{width:100%;max-width:320px;padding:8px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--surface);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;font-size:.84rem;outline:none;}
+.search-input:focus{border-color:var(--brand);}
+.refresh-btn{padding:6px 13px;border-radius:7px;font-size:.77rem;font-weight:700;cursor:pointer;border:1.5px solid var(--border);background:var(--surface);color:var(--text2);font-family:'Plus Jakarta Sans',sans-serif;transition:all .17s;}
+.refresh-btn:hover{border-color:var(--brand);color:var(--brand);}
+#toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);padding:10px 22px;border-radius:9px;font-size:.84rem;font-weight:600;font-family:'Plus Jakarta Sans',sans-serif;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.18);opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;}
+.empty{text-align:center;padding:3rem 1rem;color:var(--text3);font-size:.88rem;}
+.theme-btn{width:34px;height:34px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);cursor:pointer;font-size:.9rem;margin-left:auto;display:flex;align-items:center;justify-content:center;}
+</style>
+</head>
+<body>
+
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">Arese.AI</div>
+    <div class="login-sub">Admin Panel</div>
+    <div class="login-warn">🔒 Access restricted to authorized admins only</div>
+    <div id="g_id_onload"
+      data-client_id="535458425515-ltbcj70vjojj9m8sdbdcgs9phlnpbr0i.apps.googleusercontent.com"
+      data-callback="handleAdminLogin"
+      data-auto_prompt="false">
+    </div>
+    <button class="google-btn" onclick="google.accounts.id.prompt()">
+      <svg class="google-icon" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Sign in with Google
+    </button>
+  </div>
+</div>
+
+<div id="app">
+  <div class="sidebar">
+    <div class="sidebar-logo">Arese.AI <span>Admin Panel</span></div>
+    <button class="nav-item active" onclick="showPage('dashboard')">📊 Dashboard</button>
+    <button class="nav-item" onclick="showPage('users')">👥 Users</button>
+    <button class="nav-item" onclick="showPage('payments')">💳 Payments</button>
+    <div class="sidebar-footer">
+      <div class="admin-pill">
+        <img id="admin-avatar" src="" alt="">
+        <span id="admin-name"></span>
+      </div>
+      <button class="theme-btn" onclick="toggleTheme()" style="margin-top:.75rem;width:100%;">Toggle Theme</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <div id="page-dashboard" class="page active">
+      <div class="page-title">Dashboard</div>
+      <div class="stat-grid">
+        <div class="stat-card brand"><div class="stat-label">Total Users</div><div class="stat-val" id="s-total">—</div></div>
+        <div class="stat-card green"><div class="stat-label">Pro Users</div><div class="stat-val" id="s-pro">—</div></div>
+        <div class="stat-card"><div class="stat-label">Free Users</div><div class="stat-val" id="s-free">—</div></div>
+        <div class="stat-card amber"><div class="stat-label">Pending Payments</div><div class="stat-val" id="s-pending">—</div></div>
+        <div class="stat-card purple"><div class="stat-label">Total Payments</div><div class="stat-val" id="s-totalpay">—</div></div>
+        <div class="stat-card green"><div class="stat-label">Approved Payments</div><div class="stat-val" id="s-approved">—</div></div>
+      </div>
+      <div class="table-card">
+        <div class="table-head">
+          <div class="table-title">⏳ Pending Payments</div>
+          <button class="refresh-btn" onclick="loadAll()">↻ Refresh</button>
+        </div>
+        <table>
+          <thead><tr><th>Email</th><th>Name</th><th>TXN ID</th><th>Submitted</th><th>Actions</th></tr></thead>
+          <tbody id="pending-table-body"><tr><td colspan="5" class="empty">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="page-users" class="page">
+      <div class="page-title">Users</div>
+      <div class="table-card">
+        <div class="table-head">
+          <div class="table-title">All Users</div>
+          <div style="display:flex;gap:.5rem;align-items:center;">
+            <button class="refresh-btn" onclick="loadUsers()">↻ Refresh</button>
+            <span class="table-count" id="users-count">0</span>
+          </div>
+        </div>
+        <div class="search-row">
+          <input class="search-input" type="text" placeholder="Search by email or name..." id="user-search" oninput="filterUsers()">
+        </div>
+        <table>
+          <thead><tr><th>Email</th><th>Name</th><th>Plan</th><th>Usage Today</th><th>Last Seen</th><th>Actions</th></tr></thead>
+          <tbody id="users-table-body"><tr><td colspan="6" class="empty">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="page-payments" class="page">
+      <div class="page-title">Payments</div>
+      <div class="table-card">
+        <div class="table-head">
+          <div class="table-title">All UPI Payments</div>
+          <div style="display:flex;gap:.5rem;align-items:center;">
+            <button class="refresh-btn" onclick="loadPayments()">↻ Refresh</button>
+            <span class="table-count" id="payments-count">0</span>
+          </div>
+        </div>
+        <table>
+          <thead><tr><th>Email</th><th>TXN ID</th><th>Status</th><th>Submitted</th><th>Actions</th></tr></thead>
+          <tbody id="payments-table-body"><tr><td colspan="5" class="empty">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+let adminToken = null;
+let allUsers = [];
+let allPayments = [];
+
+function handleAdminLogin(response) {
+  const payload = JSON.parse(atob(response.credential.split('.')[1]));
+  if (payload.email !== 'sh.tn1407@gmail.com') {
+    document.getElementById('login-screen').innerHTML = `
+      <div class="login-card">
+        <div style="font-size:2rem;margin-bottom:1rem;">🚫</div>
+        <div style="font-weight:700;font-size:1.1rem;margin-bottom:.5rem;">Access Denied</div>
+        <div style="font-size:.85rem;color:var(--text2);">This admin panel is restricted.<br><b>${payload.email}</b> is not authorized.</div>
+      </div>`;
+    return;
+  }
+  adminToken = response.credential;
+  document.getElementById('admin-avatar').src = payload.picture;
+  document.getElementById('admin-name').textContent = payload.name.split(' ')[0];
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  loadAll();
+}
+
+async function api(endpoint, body = {}) {
+  const r = await fetch(endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ ...body, token: adminToken })
+  });
+  return await r.json();
+}
+
+async function loadAll() {
+  await Promise.all([loadStats(), loadPendingQuick(), loadUsers(), loadPayments()]);
+}
+
+async function loadStats() {
+  const d = await api('/api/admin/stats');
+  if (d.error) return;
+  document.getElementById('s-total').textContent = d.totalUsers;
+  document.getElementById('s-pro').textContent = d.proUsers;
+  document.getElementById('s-free').textContent = d.freeUsers;
+  document.getElementById('s-pending').textContent = d.pendingPayments;
+  document.getElementById('s-totalpay').textContent = d.totalPayments;
+  document.getElementById('s-approved').textContent = d.approvedPayments;
+}
+
+async function loadPendingQuick() {
+  const d = await api('/api/admin/payments');
+  if (d.error) return;
+  const pending = (d.payments || []).filter(p => p.status === 'pending');
+  const tbody = document.getElementById('pending-table-body');
+  if (!pending.length) { tbody.innerHTML = '<tr><td colspan="5" class="empty">No pending payments 🎉</td></tr>'; return; }
+  tbody.innerHTML = pending.map(p => `
+    <tr>
+      <td class="email-cell">${p.email}</td>
+      <td>${p.name || '—'}</td>
+      <td class="mono">${p.txnId}</td>
+      <td>${fmtDate(p.submittedAt)}</td>
+      <td><div class="btn-row">
+        <button class="btn btn-approve" onclick="approvePayment('${p.email}','${p.txnId}')">✓ Approve</button>
+        <button class="btn btn-reject" onclick="rejectPayment('${p.txnId}')">✕ Reject</button>
+      </div></td>
+    </tr>`).join('');
+}
+
+async function loadUsers() {
+  const d = await api('/api/admin/users');
+  if (d.error) return;
+  allUsers = d.users || [];
+  document.getElementById('users-count').textContent = allUsers.length;
+  renderUsers(allUsers);
+}
+
+function renderUsers(users) {
+  const tbody = document.getElementById('users-table-body');
+  if (!users.length) { tbody.innerHTML = '<tr><td colspan="6" class="empty">No users yet</td></tr>'; return; }
+  tbody.innerHTML = users.map(u => `
+    <tr>
+      <td class="email-cell">${u.email}</td>
+      <td>${u.name || '—'}</td>
+      <td><span class="badge ${u.isPro ? 'badge-pro' : 'badge-free'}">${u.isPro ? '⭐ Pro' : 'Free'}</span></td>
+      <td>${u.usageDate === new Date().toDateString() ? (u.usageCount || 0) : 0} / ${u.isPro ? 30 : 10}</td>
+      <td>${u.lastSeen ? fmtDate(u.lastSeen) : '—'}</td>
+      <td><div class="btn-row">
+        ${u.isPro
+          ? `<button class="btn btn-revoke" onclick="revokeUser('${u.email}')">Revoke Pro</button>`
+          : `<button class="btn btn-approve" onclick="grantPro('${u.email}')">Grant Pro</button>`}
+        <button class="btn btn-reset" onclick="resetUsage('${u.email}')">Reset Usage</button>
+      </div></td>
+    </tr>`).join('');
+}
+
+function filterUsers() {
+  const q = document.getElementById('user-search').value.toLowerCase();
+  renderUsers(allUsers.filter(u => u.email.toLowerCase().includes(q) || (u.name||'').toLowerCase().includes(q)));
+}
+
+async function loadPayments() {
+  const d = await api('/api/admin/payments');
+  if (d.error) return;
+  allPayments = d.payments || [];
+  document.getElementById('payments-count').textContent = allPayments.length;
+  const tbody = document.getElementById('payments-table-body');
+  if (!allPayments.length) { tbody.innerHTML = '<tr><td colspan="5" class="empty">No payments yet</td></tr>'; return; }
+  tbody.innerHTML = allPayments.map(p => `
+    <tr>
+      <td class="email-cell">${p.email}</td>
+      <td class="mono">${p.txnId}</td>
+      <td><span class="badge badge-${p.status}">${p.status}</span></td>
+      <td>${fmtDate(p.submittedAt)}</td>
+      <td><div class="btn-row">
+        ${p.status === 'pending' ? `
+          <button class="btn btn-approve" onclick="approvePayment('${p.email}','${p.txnId}')">✓ Approve</button>
+          <button class="btn btn-reject" onclick="rejectPayment('${p.txnId}')">✕ Reject</button>` : '—'}
+      </div></td>
+    </tr>`).join('');
+}
+
+async function grantPro(email) {
+  const d = await api('/api/admin/approve', { email });
+  if (d.success) { toast('✓ Pro granted to ' + email, 'green'); await loadAll(); }
+  else toast('Error: ' + d.error, 'red');
+}
+
+async function revokeUser(email) {
+  if (!confirm(`Revoke Pro from ${email}?`)) return;
+  const d = await api('/api/admin/revoke', { email });
+  if (d.success) { toast('Pro revoked from ' + email, 'amber'); await loadAll(); }
+  else toast('Error: ' + d.error, 'red');
+}
+
+async function approvePayment(email, txnId) {
+  const d = await api('/api/admin/approve', { email, txnId });
+  if (d.success) { toast('✓ Pro granted to ' + email, 'green'); await loadAll(); }
+  else toast('Error: ' + d.error, 'red');
+}
+
+async function rejectPayment(txnId) {
+  if (!confirm('Reject this payment?')) return;
+  const d = await api('/api/admin/reject-payment', { txnId });
+  if (d.success) { toast('Payment rejected', 'amber'); await loadAll(); }
+  else toast('Error: ' + d.error, 'red');
+}
+
+async function resetUsage(email) {
+  const d = await api('/api/admin/reset-usage', { email });
+  if (d.success) { toast('Usage reset for ' + email, 'green'); await loadUsers(); }
+  else toast('Error: ' + d.error, 'red');
+}
+
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+function fmtDate(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) + ' ' +
+    d.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+}
+
+function toast(msg, color = 'green') {
+  const t = document.getElementById('toast');
+  const colors = { green: '#16a34a', red: '#ef4444', amber: '#d97706' };
+  t.textContent = msg;
+  t.style.background = colors[color] || colors.green;
+  t.style.color = '#fff';
+  t.style.opacity = '1';
+  clearTimeout(t._t);
+  t._t = setTimeout(() => t.style.opacity = '0', 3000);
+}
+
+function toggleTheme() {
+  const d = document.documentElement;
+  d.setAttribute('data-theme', d.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+}
+</script>
+</body>
+</html>
