@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html lang="en" data-theme="light">
-<head>
+<html lang="en" data-theme="dark"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Arese.AI — Student Intelligence Platform</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fraunces:ital,wght@0,600;0,700;0,800;1,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;family=Fraunces:ital,wght@0,600;0,700;0,800;1,700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
 <style>
 /* ===== THEME TOKENS ===== */
 :root {
@@ -501,7 +499,7 @@ footer b{color:var(--brand);}
     </div>
     <div class="tool-grid">
       <div class="tc" onclick="showTool('planner')"><div class="tc-top"><div class="tc-ico">📅</div><div class="tc-arr">↗</div></div><div class="tc-name">Study Planner</div><div class="tc-desc">Personalized weekly timetable based on your subjects, deadlines, and learning pace.</div></div>
-      <div class="tc" onclick="showTool('essay')"><div class="tc-top"><div class="tc-ico">✍️</div><div class="tc-arr">↗</div></div><div class="tc-name">Essay & Grammar Helper</div><div class="tc-desc">Grammar fixes, vocabulary upgrades, and clear explanations so you actually learn.</div></div>
+      <div class="tc" onclick="showTool('essay')"><div class="tc-top"><div class="tc-ico">✍️</div><div class="tc-arr">↗</div></div><div class="tc-name">Essay &amp; Grammar Helper</div><div class="tc-desc">Grammar fixes, vocabulary upgrades, and clear explanations so you actually learn.</div></div>
       <div class="tc" onclick="showTool('fakenews')"><div class="tc-top"><div class="tc-ico">🔍</div><div class="tc-arr">↗</div></div><div class="tc-name">Fake News Detector</div><div class="tc-desc">Credibility score with reasoning and red flags for any article or social post.</div></div>
       <div class="tc" onclick="showTool('wellness')"><div class="tc-top"><div class="tc-ico">🧘</div><div class="tc-arr">↗</div></div><div class="tc-name">Mental Wellness Chat</div><div class="tc-desc">Talk about stress and burnout, get healthy study habits and relaxation tips.</div></div>
       <div class="tc" onclick="showTool('notes')"><div class="tc-top"><div class="tc-ico">📝</div><div class="tc-arr">↗</div></div><div class="tc-name">Note Summarizer</div><div class="tc-desc">Turn long notes into summaries, key points, and interactive flashcards.</div></div>
@@ -522,11 +520,11 @@ footer b{color:var(--brand);}
   <div class="fcard">
     <div class="g2">
       <div class="ig"><label class="lbl">Subjects (comma-separated)</label><input type="text" id="p-subjects" value="Math, Physics, History, English, Chemistry"></div>
-      <div class="ig"><label class="lbl">Upcoming Exams & Deadlines</label><input type="text" id="p-exams" value="Math exam Monday, Physics test Friday, History essay due Thursday"></div>
+      <div class="ig"><label class="lbl">Upcoming Exams &amp; Deadlines</label><input type="text" id="p-exams" value="Math exam Monday, Physics test Friday, History essay due Thursday"></div>
     </div>
     <div class="g2">
-      <div class="ig"><label class="lbl">Daily Study Hours</label><select id="p-hours"><option value="2">2 hrs/day</option><option value="3" selected>3 hrs/day</option><option value="4">4 hrs/day</option><option value="5">5+ hrs/day</option></select></div>
-      <div class="ig"><label class="lbl">Learning Pace</label><select id="p-pace"><option value="slow">Slow & thorough</option><option value="moderate" selected>Moderate</option><option value="fast">Fast-paced</option></select></div>
+      <div class="ig"><label class="lbl">Daily Study Hours</label><select id="p-hours"><option value="2">2 hrs/day</option><option value="3" selected="">3 hrs/day</option><option value="4">4 hrs/day</option><option value="5">5+ hrs/day</option></select></div>
+      <div class="ig"><label class="lbl">Learning Pace</label><select id="p-pace"><option value="slow">Slow &amp; thorough</option><option value="moderate" selected="">Moderate</option><option value="fast">Fast-paced</option></select></div>
     </div>
     <div class="ig"><label class="lbl">Weak Areas Needing Extra Attention</label><input type="text" id="p-weak" value="Calculus, Organic chemistry"></div>
   </div>
@@ -537,7 +535,7 @@ footer b{color:var(--brand);}
 <!-- ===== ESSAY HELPER ===== -->
 <div id="tool-essay" class="app-sec">
   <button class="back" onclick="backToHome()">← Back to Home</button>
-  <div class="ph"><span class="ph-icon">✍️</span><div class="ph-title">AI Essay & Grammar Helper</div><div class="ph-desc">Paste your writing. Get grammar corrections, vocabulary improvements, and detailed explanations.</div></div>
+  <div class="ph"><span class="ph-icon">✍️</span><div class="ph-title">AI Essay &amp; Grammar Helper</div><div class="ph-desc">Paste your writing. Get grammar corrections, vocabulary improvements, and detailed explanations.</div></div>
   <div class="api-badge"><div class="adot"></div><span>Ollama Cloud (deepseek-v3.2)</span><div class="mtag">CLOUD</div></div>
   <div class="pills">
     <div class="pill on" onclick="selPill(this,'grammar')">Grammar Check</div>
@@ -547,7 +545,7 @@ footer b{color:var(--brand);}
   </div>
   <input type="hidden" id="e-mode" value="grammar">
   <div class="fcard"><div class="ig"><label class="lbl">Paste Your Writing</label><textarea id="e-text" rows="8">The students was very excited to went on the trip. They brung their lunch and throwed the trash in the bin after eating. The teacher were happy with their behavior and give them stars.</textarea></div></div>
-  <button class="run" id="essay-btn" onclick="runEssay()">✨ Analyze & Improve My Writing</button>
+  <button class="run" id="essay-btn" onclick="runEssay()">✨ Analyze &amp; Improve My Writing</button>
   <div class="out-box" id="essay-out"><div class="out-lbl">✍️ Writing Analysis</div><div class="oc" id="essay-c"></div></div>
 </div>
 
@@ -602,9 +600,9 @@ footer b{color:var(--brand);}
   </div>
   <input type="hidden" id="n-mode" value="summary">
   <div class="fcard"><div class="ig"><label class="lbl">Paste Notes / Chapter</label><textarea id="n-text" rows="9">The French Revolution (1789-1799) was a period of radical political and societal change in France that began with the Estates General of 1789 and ended with the formation of the French Consulate in November 1799. Many of its ideas are considered fundamental principles of liberal democracy; while the values and institutions it created often serve as a template for other republican movements. The Revolution resulted in the suppression of the feudal system, emancipation of the individual, the greater division of landed property, abolition of the privileges of noble birth, and nominal establishment of equality among men. The Declaration of the Rights of Man and Citizen was adopted in August 1789.</textarea></div></div>
-  <button class="run" id="notes-btn" onclick="runNotes()">📝 Summarize & Create Flashcards</button>
+  <button class="run" id="notes-btn" onclick="runNotes()">📝 Summarize &amp; Create Flashcards</button>
   <div class="out-box" id="notes-out">
-    <div class="out-lbl">📝 Summary & Flashcards</div>
+    <div class="out-lbl">📝 Summary &amp; Flashcards</div>
     <div class="oc" id="notes-c"></div>
     <div id="fc-container"></div>
   </div>
@@ -617,7 +615,7 @@ footer b{color:var(--brand);}
   <div class="api-badge"><div class="adot"></div><span>Ollama Cloud (deepseek-v3.2)</span><div class="mtag">CLOUD</div></div>
   <div class="g2">
     <div class="ig"><label class="lbl">Language to Practice</label><select id="l-lang"><option>Spanish</option><option>French</option><option>Japanese</option><option>German</option><option>Mandarin</option><option>Hindi</option><option>Arabic</option><option>Portuguese</option></select></div>
-    <div class="ig"><label class="lbl">My Level</label><select id="l-lvl"><option>beginner</option><option selected>intermediate</option><option>advanced</option></select></div>
+    <div class="ig"><label class="lbl">My Level</label><select id="l-lvl"><option>beginner</option><option selected="">intermediate</option><option>advanced</option></select></div>
   </div>
   <div class="chat-shell">
     <div class="chat-area" id="l-chat"><div class="cm a">🌍 ¡Hola! I'm your Arese language tutor. Select your language above, then start chatting! I'll correct your grammar and help you sound more natural.</div></div>
@@ -648,7 +646,7 @@ footer b{color:var(--brand);}
         print("halfway!")
         break</textarea></div>
   </div>
-  <button class="run" id="code-btn" onclick="runCode()">💻 Analyze & Help Me Fix It</button>
+  <button class="run" id="code-btn" onclick="runCode()">💻 Analyze &amp; Help Me Fix It</button>
   <div class="out-box" id="code-out"><div class="out-lbl">💻 Code Analysis</div><div class="oc" id="code-c"></div></div>
 </div>
 
@@ -1212,5 +1210,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 </script>
-</body>
-</html>
+
+
+</body></html>
