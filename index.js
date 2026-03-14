@@ -42,7 +42,7 @@ app.post('/api/chat', async (req, res) => {
     const data = await response.json();
     console.log('Ollama response:', JSON.stringify(data).slice(0, 200));
 
-    const content = data?.message?.content || '';
+    const content = data?.message?.content || data?.message?.thinking || '';
     if (!content) {
       console.error('Empty content, full response:', JSON.stringify(data));
       return res.status(500).json({ error: 'Empty response from Ollama. Full: ' + JSON.stringify(data) });
