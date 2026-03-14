@@ -448,8 +448,13 @@ display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.5rem
 /* ===== LOGIN SCREEN ===== */
 #login-screen{
   position:fixed;inset:0;z-index:9999;
-  background:var(--bg);display:flex;align-items:center;justify-content:center;
-  flex-direction:column;padding:2rem;
+  background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;
+  padding:2rem;
+  overflow-y:auto;
+  min-height:100vh;
+  width:100vw;
 }
 .login-card{
   background:var(--surface);border:1px solid var(--border);border-radius:20px;
@@ -585,10 +590,34 @@ display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.5rem
         </div>
       </div>
     </div>
-    <button class="run" onclick="handleProPurchase()" style="background:linear-gradient(135deg,#f59e0b,#e8460a);box-shadow:0 4px 20px rgba(245,158,11,.3);">
-      ⭐ Get Pro for ₹99/month
-    </button>
-    <p class="pro-note">Payment integration coming soon. Contact us at <b><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="167764736573567d737b7f75576473657338717f627e6374387f79">[email&#160;protected]</a></b> to upgrade manually.</p>
+    <div id="upi-payment-section">
+      <button class="run" onclick="showUpiDetails()" style="background:linear-gradient(135deg,#f59e0b,#e8460a);box-shadow:0 4px 20px rgba(245,158,11,.3);">
+        ⭐ Pay ₹99/month via UPI
+      </button>
+      <p class="pro-note">Zero fees · Instant · UPI / GPay / PhonePe / Paytm</p>
+    </div>
+
+    <div id="upi-details-section" style="display:none;">
+      <div style="background:var(--surface2);border:1.5px solid var(--border);border-radius:14px;padding:1.5rem;text-align:center;margin-bottom:1rem;">
+        <!-- UPI QR placeholder -->
+        <div style="width:160px;height:160px;background:var(--surface3);border:1px solid var(--border);border-radius:10px;margin:0 auto 1rem;display:flex;align-items:center;justify-content:center;font-size:.8rem;color:var(--text3);">
+          📷 Add your UPI QR<br>image here
+        </div>
+        <div style="font-size:.82rem;color:var(--text2);margin-bottom:.5rem;">Or pay directly to UPI ID:</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:1rem;font-weight:700;color:var(--brand);background:var(--brand-l);padding:10px 20px;border-radius:8px;border:1px solid rgba(232,70,10,.2);cursor:pointer;user-select:all;" onclick="copyUpi(this)">
+          YOUR_UPI_ID@upi
+        </div>
+        <div id="upi-copy-msg" style="font-size:.75rem;color:#22c55e;margin-top:.4rem;display:none;">✓ Copied!</div>
+        <div style="font-size:.78rem;color:var(--text2);margin-top:1rem;line-height:1.7;">
+          Amount: <b style="color:var(--brand);">₹99</b> · Add your Gmail in payment note
+        </div>
+      </div>
+      <div style="display:flex;gap:.5rem;">
+        <input type="text" id="upi-txn-id" placeholder="Paste UPI Transaction ID / UTR number" style="flex:1;font-size:.85rem;padding:10px 13px;">
+        <button class="csend" onclick="submitUpiPayment()" style="padding:0 16px;border-radius:9px;white-space:nowrap;">Submit</button>
+      </div>
+      <p class="pro-note" style="margin-top:.75rem;">After paying, paste the Transaction ID above. We'll verify and activate Pro within a few minutes.</p>
+    </div>
   </div>
 </div>
 
@@ -703,7 +732,7 @@ display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.5rem
           <div>✓ 🌐 Web Search</div>
           <div>✓ Priority support</div>
         </div>
-        <button class="btn-p" style="width:100%;margin-top:1.5rem;background:linear-gradient(135deg,#f59e0b,#e8460a);box-shadow:0 4px 18px rgba(245,158,11,.3);" onclick="openProModal()">⭐ Upgrade to Pro</button>
+        <button class="btn-p" style="width:100%;margin-top:1.5rem;background:linear-gradient(135deg,#f59e0b,#e8460a);box-shadow:0 4px 18px rgba(245,158,11,.3);" onclick="openProModal()">⭐ Get Pro — ₹99/month</button>
       </div>
     </div>
   </section>
@@ -1109,7 +1138,53 @@ function updateUserUI() {
 function openProModal() { document.getElementById('pro-modal').classList.add('show'); }
 function closeProModal() { document.getElementById('pro-modal').classList.remove('show'); }
 function handleProPurchase() {
-  alert('Payment integration coming soon!\n\nContact us at arese@kemicArese.github.io to upgrade manually.');
+  if (!currentUser) {
+    showToast('Please login first to upgrade 🔐', 'warn');
+    document.getElementById('login-screen').style.display = 'flex';
+    return;
+  }
+  openProModal();
+}
+
+function showUpiDetails() {
+  document.getElementById('upi-payment-section').style.display = 'none';
+  document.getElementById('upi-details-section').style.display = 'block';
+}
+
+function copyUpi(el) {
+  navigator.clipboard.writeText(el.textContent.trim()).then(() => {
+    document.getElementById('upi-copy-msg').style.display = 'block';
+    setTimeout(() => { document.getElementById('upi-copy-msg').style.display = 'none'; }, 2000);
+  });
+}
+
+async function submitUpiPayment() {
+  const txnId = document.getElementById('upi-txn-id').value.trim();
+  if (!txnId) { showToast('Please enter your Transaction ID', 'warn'); return; }
+  if (!currentUser) { showToast('Please login first', 'warn'); return; }
+
+  try {
+    const r = await fetch('/api/submit-upi', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        token: currentUser.token,
+        email: currentUser.email,
+        txnId,
+        name: currentUser.name
+      })
+    });
+    const d = await r.json();
+    if (d.success) {
+      closeProModal();
+      showToast('✅ Payment submitted! Pro will be activated after verification.', 'success');
+      document.getElementById('upi-txn-id').value = '';
+    } else {
+      showToast('Failed to submit: ' + (d.error || 'Try again'), 'warn');
+    }
+  } catch (e) {
+    showToast('Error: ' + e.message, 'warn');
+  }
 }
 
 // Guard all AI calls with usage check
